@@ -11,7 +11,7 @@ limitations, including:
 * Arguments must be separated by whitespace.
 * No quoting arguments or escaping whitespace.
 * No piping or redirection.
-* Only builtins are: `cd`, `help`, `exit`.
+* Only builtins are: `cd`, `help`, `exit`, `show`.
 
 Running
 -------

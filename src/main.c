@@ -23,6 +23,7 @@
 int lsh_cd(char **args);
 int lsh_help(char **args);
 int lsh_exit(char **args);
+int lsh_show(char **args);
 
 /*
   List of builtin commands, followed by their corresponding functions.
@@ -30,13 +31,15 @@ int lsh_exit(char **args);
 char *builtin_str[] = {
   "cd",
   "help",
-  "exit"
+  "exit",
+  "show",
 };
 
 int (*builtin_func[]) (char **) = {
   &lsh_cd,
   &lsh_help,
-  &lsh_exit
+  &lsh_exit,
+  &lsh_show,
 };
 
 int lsh_num_builtins() {
@@ -92,6 +95,41 @@ int lsh_help(char **args)
 int lsh_exit(char **args)
 {
   return 0;
+}
+
+/**
+   @brief Builtin command: display file to screen, line-by-line.
+   @param args List of args.  args[0] is "show".  args[1] is the file.
+   @return Always returns 1, to continue executing.
+ */
+int lsh_show(char **args)
+{
+  #define PAGE_SIZE 10 // number of lines per page
+
+  if (args[1] == NULL) {
+    fprintf(stderr, "display_file: expected argument to \"show\"\n");
+  } else {
+  
+    FILE *file_ptr = fopen(args[1], "r");
+    if (file_ptr == NULL) {
+      printf("display_file: failed to open file '%s'\n", args[1]);
+      return 1;
+    }
+    char line_buffer[256];
+    int page_number = 1;
+    while (fgets(line_buffer, sizeof(line_buffer), file_ptr) != NULL) {
+      printf("%s", line_buffer);
+      if (page_number % PAGE_SIZE == 0) {
+        printf("\n=== Press enter to continue ===");
+        getchar();
+      }
+      page_number++;
+    }
+    fclose(file_ptr);
+    
+  }
+  
+  return 1;
 }
 
 /**
