@@ -17,6 +17,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "lsh_run.h"
+
 /*
   Function Declarations for builtin shell commands:
  */
@@ -24,6 +26,7 @@ int lsh_cd(char **args);
 int lsh_help(char **args);
 int lsh_exit(char **args);
 int lsh_show(char **args);
+int lsh_run(char **args);
 
 /*
   List of builtin commands, followed by their corresponding functions.
@@ -33,6 +36,7 @@ char *builtin_str[] = {
   "help",
   "exit",
   "show",
+  "run"
 };
 
 int (*builtin_func[]) (char **) = {
@@ -40,6 +44,7 @@ int (*builtin_func[]) (char **) = {
   &lsh_help,
   &lsh_exit,
   &lsh_show,
+  &lsh_run
 };
 
 int lsh_num_builtins() {
@@ -130,6 +135,24 @@ int lsh_show(char **args)
   }
   
   return 1;
+}
+
+/**
+   @brief Builtin command: run tests.
+   @param args List of args.  args[0] is "file".  args[1] is the tests json file.
+   @return Always returns 1, to continue executing.
+ */
+int lsh_run(char **args) {
+
+  if (args[1] == NULL) {
+    fprintf(stderr, "program_file: expected argument to run\n");
+    return 0;
+  }
+  if (args[2] == NULL) {
+    fprintf(stderr, "test_file: expected argument to run tests\n");
+    return 0;
+  }
+  return lsh_run_exc(args);
 }
 
 /**

@@ -1,0 +1,27 @@
+{
+    "Bash Script": {
+        "c": {
+            "Compile":  "#!/bin/bash\nDIR=$(dirname \"${1}\"); FILE=$(basename \"${1}\" .c); gcc \"${DIR}/${FILE}.c\" -o \"${FILE}\"",
+            "Execute":  "#!/bin/bash\nDIR=$(dirname \"${1}\"); FILE=$(basename \"${1}\" .c); shift; ./${FILE} \"$@\"",
+            "Exit":     "#!/bin/bash\nDIR=$(dirname \"$1\"); FILE=$(basename \"$1\" .c); shift; rm \"$FILE\""
+        },
+        "java": {
+            "Compile":  "#!/bin/bash\nDIR=$(dirname \"${1}\"); FILE=$(basename \"${1}\" .java); javac \"${DIR}/${FILE}.java\" -d .",
+            "Execute":  "#!/bin/bash\nDIR=$(dirname \"${1}\"); FILE=$(basename \"${1}\" .java); shift; java \"${FILE}\" \"$@\"",
+            "Exit":     "#!/bin/bash\nDIR=$(dirname \"$1\"); FILE=$(basename \"$1\" .java); shift; rm \"${FILE}.class\"\n"
+        },
+        "py": {
+            "Compile":  "#!/bin/bash\n",
+            "Execute":  "#!/bin/bash\npython3 \"${1}\" \"${@:2}\"",
+            "Exit":     "#!/bin/bash\n"              
+        }
+    },
+
+    "Test Cases": {
+        "Fail Test": ["1 + 1", "100"],
+        "Test 1": ["1 + 1", "2"],
+        "Test 2": ["3 * 2", "6"],
+        "Test 3": ["4 - 2", "2"],
+        "Test 4": ["8 / 2", "4"]
+    }
+}
